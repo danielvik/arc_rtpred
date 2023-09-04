@@ -1,7 +1,5 @@
 #!/bin/bash
 
-conda activate deepchem_env
-
 export model_dir=/models/xgboost_ecfp4/
 mkdir -p "$model_dir"
 
@@ -18,7 +16,6 @@ do
     export model_dir=/models/xgboost_ecfp4/xgboost_ecfp4_${i}/
     mkdir ${model_dir}
 
-
     python ./notebooks_and_code/functions/model_training/xgboost_hyperopt.py \
     --train_labels ${base_data_dir}/labels_train_${i}_split.csv/ \
     --train_feats ${base_data_dir}/features_train_${i}_split.csv/ \
@@ -31,5 +28,3 @@ do
     --iterations 20
 
 done
-
-

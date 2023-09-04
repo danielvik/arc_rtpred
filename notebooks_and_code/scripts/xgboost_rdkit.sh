@@ -1,57 +1,31 @@
 #!/bin/bash
 
-source /compchem/arc/apps/anaconda/anaconda-2020.11_dkcn-plws-arc02/etc/profile.d/conda.sh
+export model_dir=/models/xgboost_rdkit/
+mkdir -p "$model_dir"
 
-conda activate deepchem_env
+export base_data_dir=./data/metlin_smrt/features/rdkit_csv/cv_splits/
 
-# SLURM specific stuff:
-#  template for submitting jobs to the SLURM queueing system
-#  to execute the script:
-#  "sbatch -n <numberCpus> -p normal --nodelist=dkcn-papp-nudk1 template_squeue.slm"
-#
-# SLURM_JOB_ID and SLURM_NNODES are variables from SLURM that can be used
-# Define the range of iterations
+# looping through the 5 CV splits
 start=0 \
 end=4
-
-export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/
-mkdir ${temporaryDirectory}
 
 # Iterate using a for loop
 for ((i=start; i<=end; i++))
 do
 
-    export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/xgboost_rdkit_${i}/
-    mkdir ${temporaryDirectory}
-
-    #SLURM_NNODES=${numberCpus}
-    export base_data_dir=/compchem/arc/users/dvik/rt_pub/data/features/rdkit_csv/cv_splits/
+    export model_dir=/models/xgboost_ecfp4/xgboost_rdkit_${i}/
+    mkdir ${model_dir}
 
 
-
-    #mkdir ${temporaryDirectory}
-
-    #conda activate deepchem_env
-
-    python /compchem/arc/users/dvik/rt_pub/code/xgboost_csv.py \
+    python ./notebooks_and_code/functions/model_training/xgboost_hyperopt.py \
     --train_labels ${base_data_dir}/labels_train_${i}_split.csv/ \
     --train_feats ${base_data_dir}/features_train_${i}_split.csv/ \
     --valid_labels ${base_data_dir}/labels_valid_${i}_split.csv/ \
     --valid_feats ${base_data_dir}/features_valid_${i}_split.csv/ \
     --test_labels ${base_data_dir}/labels_test_df.csv/ \
     --test_feats ${base_data_dir}/features_test_df.csv/ \
-    --model_directory ${temporaryDirectory} \
+    --model_directory ${model_dir} \
     --epochs 100 \
     --iterations 20
 
-
-    cp -r ${temporaryDirectory} /compchem/arc/users/dvik/rt_pub/models/xgboost_rdkit/
 done
-###? to run in command line
-###? sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/xgboost_rdkit.sh  
-
-#! ID: 15163
-
-###? see the output 
-###? tail -f slurm-15163.out
-

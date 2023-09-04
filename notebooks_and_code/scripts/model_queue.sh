@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source /compchem/arc/apps/anaconda/anaconda-2020.11_dkcn-plws-arc02/etc/profile.d/conda.sh
-
-conda activate deepchem_env
+conda activate arc_rtpred
 
 mkdir /models/
 

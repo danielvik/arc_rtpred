@@ -1,0 +1,20 @@
+name: arc_rtpred
+channels:
+  - defaults
+  - conda-forge
+  - rmg
+  - pyg
+  - nvidia
+  - dglteam/label/cu118
+  - pytorch
+dependencies:
+  - rdkit
+  - pytorch
+  - deepchem
+  - pyg
+  - hyperopt
+  - descriptastorus
+  - numpy
+  - dgllife
+  - pytorch-cuda
+  - dgl
