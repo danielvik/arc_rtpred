@@ -23,7 +23,7 @@ def get_METLIN_data(sampling = 2000, only_retained = True):
     url = 'https://figshare.com/ndownloader/files/18130628'
 
     #* read the data into a pandas dataframe and convert inchi to SMILES
-    df = pd.read_csv(url, sep=';')
+    df = pd.read_csv(url, sep=';').rename(columns = {'pubchem':'id'})
     df['mol'] = [Chem.MolFromInchi(x) for x in df['inchi']]
     df['smiles'] = [Chem.MolToSmiles(mol) if mol is not None else None for mol in df['mol']]
     df = df.dropna(axis = 0) #* dropping rows with NaN values as some mols did not convert to SMILES
@@ -33,7 +33,7 @@ def get_METLIN_data(sampling = 2000, only_retained = True):
         df = df[df['rt'] > 200]
 
     #* sampling the data
-    df_subset = df[['smiles','rt']].sample(sampling)
+    df_subset = df[['id','smiles','rt']].sample(sampling)
 
     #* outputting the data in a csv file
     output_dir = '../data/metlin_smrt'
@@ -159,7 +159,7 @@ def get_features(path_to_data, feature_dir, feature_list, path_to_chemaxon_licen
 
         print('ECFP4 Featurization - to .CSV')
         feats_df = dataset.to_dataframe()
-        feats_df.to_csv(os.path.join(target_dir, 'all_data_ecfp4.csv'),index = False)
+        feats_df.to_csv(os.path.join(target_dir, 'all_data.csv'),index = False)
 
         NA_alert = feats_df.isna().any().any()
         if NA_alert:
@@ -193,7 +193,7 @@ def get_features(path_to_data, feature_dir, feature_list, path_to_chemaxon_licen
         feats_df = dataset.to_dataframe()
         feats_df = feats_df.fillna(0)
 
-        feats_df.to_csv(os.path.join(target_dir, 'all_data_rdkit.csv'),index = False)
+        feats_df.to_csv(os.path.join(target_dir, 'all_data.csv'),index = False)
 
         NA_alert = feats_df.isna().any().any()
         if NA_alert:
