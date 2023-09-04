@@ -1,26 +1,21 @@
 #!/bin/bash
 
 
-source /compchem/arc/apps/anaconda/anaconda-2020.11_dkcn-plws-arc02/etc/profile.d/conda.sh
 
-conda activate chemprop_env
+export model_dir=/models/chemprop_ecfp4/
+mkdir -p "$model_dir"
 
-# Define the range of iterations
+export base_data_dir=./data/metlin_smrt/features/ecfp4_csv/cv_splits/
+
 start=0 \
 end=4
-
-export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/
-mkdir ${temporaryDirectory}
 
 # Iterate using a for loop
 for ((i=start; i<=end; i++))
 do
 
-    export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/chemprop_ecfp4_hyper_${i}/
-    mkdir ${temporaryDirectory}
-
-    export base_data_dir=/compchem/arc/users/dvik/rt_pub/data/features/ecfp4_csv/cv_splits/
-
+    export model_dir=/models/chemprop_ecfp4/chemprop_ecfp4_hyper_${i}/
+    mkdir ${model_dir}
 
     ###
 
@@ -31,9 +26,9 @@ do
     --separate_val_features_path ${base_data_dir}/features_valid_${i}_split.csv \
     --no_features_scaling \
     --dataset_type regression \
-    --log_dir ${temporaryDirectory}\
-    --config_save_path ${temporaryDirectory}/config.json \
-    --hyperopt_checkpoint_dir ${temporaryDirectory} \
+    --log_dir ${model_dir}\
+    --config_save_path ${model_dir}/config.json \
+    --hyperopt_checkpoint_dir ${model_dir} \
     --metric mse \
     --extra_metrics mae rmse r2 \
     --save_preds \
@@ -41,8 +36,6 @@ do
     --num_iters 20 \
     --no_cache_mol \
     --num_workers 20
-
-    cp -r ${temporaryDirectory} /compchem/arc/users/dvik/rt_pub/models/chemprop_ecfp4/
 
     ###
 
@@ -55,8 +48,8 @@ do
     --separate_test_features_path ${base_data_dir}/labels_test_df.csv \
     --no_features_scaling \
     --dataset_type regression \
-    --config_path ${temporaryDirectory}/config.json\
-    --save_dir ${temporaryDirectory} \
+    --config_path ${model_dir}/config.json\
+    --save_dir ${model_dir} \
     --metric mse \
     --extra_metrics mae rmse r2 \
     --save_preds \
@@ -64,14 +57,4 @@ do
     --no_cache_mol \
     --num_workers 20
 
-    cp -r ${temporaryDirectory} /compchem/arc/users/dvik/rt_pub/models/chemprop_ecfp4/
-
 done
-
-###? to run in command line
-###? sbatch -n 5 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/chemprop_ecfp4_hyper.sh  
-
-#! ID: 14811
-
-###? see the output 
-###? tail -f slurm-14811.out

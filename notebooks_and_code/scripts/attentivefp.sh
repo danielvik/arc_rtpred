@@ -21,7 +21,7 @@ do
     --train_dir ${base_data_dir}/train_${i}_split/ \
     --val_dir ${base_data_dir}/valid_${i}_split/ \
     --test_dir ${base_data_dir}/test_df/ \
-    --model_directory ${temporaryDirectory} \
+    --model_directory ${model_dir} \
     --epochs 100 \
     --callback_intervals 1000 \
     --iterations 20

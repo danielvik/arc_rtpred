@@ -1,27 +1,22 @@
 #!/bin/bash
 
 
-source /compchem/arc/apps/anaconda/anaconda-2020.11_dkcn-plws-arc02/etc/profile.d/conda.sh
+export model_dir=/models/chemprop_logd/
+mkdir -p "$model_dir"
 
-conda activate chemprop_env
+export base_data_dir=./data/metlin_smrt/features/logd_calculations/cv_splits/
 
-# Define the range of iterations
 start=0 \
 end=4
-
-export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/
-mkdir ${temporaryDirectory}
 
 # Iterate using a for loop
 for ((i=start; i<=end; i++))
 do
-    export temporaryDirectory=/scratch/arc/${SLURM_JOB_ID}/chemprop_logd_hyper_${i}/
-    mkdir ${temporaryDirectory}
 
-    export base_data_dir=/compchem/arc/users/dvik/rt_pub/data/features/logd_calculations/cv_splits/
+    export model_dir=/models/chemprop_logd/chemprop_logd${i}/
+    mkdir ${model_dir}
 
-
-    ### hyperoptimization
+    ###
 
     chemprop_hyperopt \
     --data_path ${base_data_dir}/labels_train_${i}_split.csv \
@@ -30,9 +25,9 @@ do
     --separate_val_features_path ${base_data_dir}/features_valid_${i}_split.csv \
     --no_features_scaling \
     --dataset_type regression \
-    --log_dir ${temporaryDirectory}\
-    --config_save_path ${temporaryDirectory}/config.json \
-    --hyperopt_checkpoint_dir ${temporaryDirectory} \
+    --log_dir ${model_dir}\
+    --config_save_path ${model_dir}/config.json \
+    --hyperopt_checkpoint_dir ${model_dir} \
     --metric mse \
     --extra_metrics mae rmse r2 \
     --save_preds \
@@ -40,8 +35,6 @@ do
     --num_iters 20 \
     --no_cache_mol \
     --num_workers 20
-
-    cp -r ${temporaryDirectory} /compchem/arc/users/dvik/rt_pub/models/chemprop_logd/
 
     ### subsequent model training
 
@@ -54,24 +47,14 @@ do
     --separate_test_features_path ${base_data_dir}/labels_test_df.csv \
     --no_features_scaling \
     --dataset_type regression \
-    --config_path ${temporaryDirectory}/config.json\
-    --save_dir ${temporaryDirectory} \
+    --config_path ${model_dir}/config.json\
+    --save_dir ${model_dir} \
     --metric mse \
     --extra_metrics mae rmse r2 \
     --save_preds \
     --epochs 100 \
     --no_cache_mol \
     --num_workers 20
-    cp -r ${temporaryDirectory} /compchem/arc/users/dvik/rt_pub/models/chemprop_logd/
 
 done
 
-####
-
-#* to run in command line
-#* sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/chemprop_logd_hyper.sh  
-
-#! ID: 15146
-
-#* see the output 
-#* tail -f slurm-15146.out
