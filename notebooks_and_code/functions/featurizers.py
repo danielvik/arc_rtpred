@@ -8,6 +8,9 @@ from tqdm import tqdm
 import subprocess
 import csv
 from rdkit import Chem
+#from functions.featurizers import LogD_calculations
+
+
 
 ######*
 ######* FUNCTIONS FOR FEATURIZING 
@@ -41,8 +44,10 @@ def get_METLIN_data(sampling = 2000, only_retained = True):
         os.makedirs(output_dir)
     output_path = os.path.join(output_dir, f'sample_dataset_{sampling}_datapoints.csv')    
     df_subset.to_csv(output_path, index=False)
-    print('saved to: ', output_path)
+    print('saved to: ', output_path,'\n')
     print(df_subset.head(3))
+
+    return output_path
 
 ####################################
 #* ChemAxon-based LogD calculations
@@ -76,6 +81,8 @@ def LogD_calculations(data, path_to_chemaxon_licence = None, path_to_chemaxon_to
     input_file_path = os.path.join(path_to_chemaxon_tools, 'smiles_for_chemaxon_logd_calc.smiles')
     output_file_path = os.path.join(path_to_chemaxon_tools, 'ChemAxon_LogD_out.csv')
 
+    ##* saving data for the commandline tool to access it
+    data.to_csv(input_file_path, index=False, header=False)
     
     ##* running the commandline tool
     filepath = f'{exe_file_path} -g logd -m weighted -H 7.4 logd -H 7 logd -H 6.5 logd -H 6 logd -H 5.5 logd -H 5 logd -H 4.5 logd -H 4 logd -H 3.5 logd -H 3 logd -H 2.5 logd -H 2 logd -H 1.5 logd -H 1 logd -H 0.5 logd -H 0 "{input_file_path}" > "{output_file_path}"'
@@ -83,6 +90,10 @@ def LogD_calculations(data, path_to_chemaxon_licence = None, path_to_chemaxon_to
     
     ##* reading the output file
     logd_desc = pd.read_csv(output_file_path, sep = '\t')
+    # drop rows with 'logd:FAILED' values 
+    logd_desc = logd_desc[~logd_desc['logD[pH=7.4]'].str.contains('FAILED')]
+    # drop rows with NA values
+    logd_desc = logd_desc.dropna(axis = 0)
                             
     logd_desc = logd_desc.replace(',','.', regex=True).apply(pd.to_numeric)
     logd_desc = pd.concat([data, logd_desc], axis = 1).drop(['id'], axis = 1)
