@@ -2,7 +2,7 @@ import deepchem as dc
 import pandas as pd
 import argparse
 import os
-from functions.xgboost_hyperopt import xgboost_hyperopt, xgboost_retrain_test
+from functions.xgboost_operations import xgboost_hyperopt, xgboost_retrain_test
 
 
 seed = 42

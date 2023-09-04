@@ -4,11 +4,13 @@ conda activate arc_rtpred
 
 mkdir /models/
 
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/attentivefp.sh 
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/metlin_model.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/chemprop_rdkit_hyper.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/chemprop_ecfp4_hyper.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/chemprop_logd_hyper.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/xgboost_ecfp4.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/xgboost_logd.sh  
-sbatch -n 20 -p normal --nodelist=dkcn-papp-nudk1 /compchem/arc/users/dvik/rt_pub/code/scripts/xgboost_rdkit.sh  
+bash  ./notebooks_and_code/scripts/xgboost_ecfp4.sh  
+bash  ./notebooks_and_code/scripts/xgboost_logd.sh  
+bash  ./notebooks_and_code/scripts/xgboost_rdkit.sh  
+
+bash  ./notebooks_and_code/scripts/attentivefp.sh 
+bash  ./notebooks_and_code/scripts/metlin_model.sh  
+
+bash  ./notebooks_and_code/scripts/chemprop_rdkit_hyper.sh  
+bash  ./notebooks_and_code/scripts/chemprop_ecfp4_hyper.sh  
+bash  ./notebooks_and_code/scripts/chemprop_logd_hyper.sh  

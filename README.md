@@ -27,5 +27,6 @@ After running the notebook, run the [[./notebooks_and_code/model_queue.sh]] shel
 ### TODO 
 
 - [ ] make enviroment: conda create env arc_rtpred > yml file or req file
-- [ ] clean up bash scripts -- how to make it generic?
+- [x] clean up bash scripts -- 
+  - [ ] how to make it generic?
 - [ ] clean up python scripts 
