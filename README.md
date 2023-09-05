@@ -1,7 +1,6 @@
 # arc_rtpred
-Code associated with RT prediction manuscript
 
-### Introduction
+This repo contains the code needed to reproduce the workflow (i.e. data featurization, splitting and model training) reported in the manuscript
 
 
 ### Method
@@ -47,12 +46,3 @@ The  [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a
 
 After running the notebook, run the [model_queue.sh](./notebooks_and_code/scripts/model_queue.sh) shell script to train the models.
 
-### TODO 
-
-- [ ] make enviroment: conda create env arc_rtpred > yml file or req file
-- [x] clean up bash scripts -- 
-  - [ ] how to make it generic?
-- [x] clean up python scripts
-  - [x] attentivefp
-  - [x] fcnn
-  - [x] xgboost 
