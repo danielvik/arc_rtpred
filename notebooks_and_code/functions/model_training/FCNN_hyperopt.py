@@ -5,13 +5,12 @@ import argparse
 import json
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import os
-from hyperopt import hp, fmin, tpe, Trials, rand, plotting
-
-# from matplotlib import pyplot as plt
+from hyperopt import hp, fmin, tpe, Trials
 
 seed = 42
 nBits = 2048
 radius = 2
+
 ############################################################################
 # Parameters
 ############################################################################
@@ -22,26 +21,26 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--train_dir",
     type=str,
-    default=r"..\\data\\features\\ecfp4_disk\\cv_splits\\train_0_split\\",
-    help="directory for featurized data -- defaults to split 0",
+    default=r"../data/metlin_smrt/features/ecfp4_disk/cv_splits/train_0_split/",
+    help="directory for featurized train data -- defaults to split 0",
 )
 parser.add_argument(
     "--val_dir",
     type=str,
-    default=r"..\\data\\features\\ecfp4_disk\\cv_splits\\valid_0_split\\",
-    help="directory for featurized data -- defaults to split 0",
+    default=r"../data/metlin_smrt/features/ecfp4_disk/cv_splits/valid_0_split/",
+    help="directory for featurized valid data -- defaults to split 0",
 )
 parser.add_argument(
     "--test_dir",
     type=str,
-    default=r"..\\data\\features\\ecfp4_disk\\cv_splits\\test_df\\",
-    help="directory for featurized data",
+    default=r"../data/metlin_smrt/features/ecfp4_disk/cv_splits/test_df/",
+    help="directory for featurized test data",
 )
 
 parser.add_argument(
     "--model_directory",
     type=str,
-    default=r"../models/model_default/",
+    default=r"../models/fcnn_ecfp4/",
     help="directory for model_saving",
 )
 
@@ -69,7 +68,7 @@ args = parser.parse_args()
 
 
 print(
-    "** This is the METLIN Model-mimic Regressor, for retention-time prediction, RMSE optimized **"
+    "** This is Fully-connected Neural Network Regressor, for retention-time prediction, RMSE optimized **"
 )
 
 ############################################################################
@@ -91,8 +90,6 @@ print("*** reloaded the featurized data ***")
 
 search_space = {
     ##* MultitaskRegressor
-    #'num_layers' : hp.randint('num_layers', high = 6, low = 1), # deepchem only have one layer parameter, so assuming this is the combined from atom and molecule layers
-    #'graph_feat_size' : hp.randint('graph_feat_size', high = 300, low = 30), # assuming this is the fingerprint dimesions
     "dropout": hp.uniform("dropout", high=0.5, low=0.0),
     "learning_rate": hp.loguniform(
         "learning_rate", high=(np.log(0.1)), low=(np.log(0.0001))
@@ -108,7 +105,7 @@ search_space = {
 ############################################################################
 
 
-model_check_point = args.model_directory  #'../models/deepchem/dmpnn_rdkit/hyperopt3/'
+model_check_point = args.model_directory
 os.makedirs(os.path.dirname(model_check_point), exist_ok=True)
 print("saving model to: ", model_check_point)
 
@@ -141,7 +138,6 @@ def fm(search_args):
         validation_interval,
         [metric],
         save_dir=model_check_point,
-        # transformers=transformers,
         save_on_minimum=True,
     )
 
@@ -149,7 +145,7 @@ def fm(search_args):
 
     # restoring the best checkpoint and passing the negative of its validation score to be minimized.
     model.restore(model_dir=model_check_point)
-    valid_score = model.evaluate(valid_dataset, [metric])  # , transformers)
+    valid_score = model.evaluate(valid_dataset, [metric])
     print("validation score:", valid_score["mean_squared_error"])
     return valid_score["mean_squared_error"]
 
@@ -163,7 +159,6 @@ best = fmin(
     fm,
     space=search_space,
     algo=tpe.suggest,
-    # algo = rand.suggest,
     max_evals=args.iterations,
     trials=trials,
 )
@@ -195,9 +190,6 @@ model = dc.models.MultitaskRegressor(
     activation_fns="relu",
 )
 
-
-# print("*** restoring model for evaluation***")
-# model.restore(model_dir=model_check_point)
 
 print("*** Training model based on best parameters ***")
 model.fit(train_dataset, nb_epoch=epochs)

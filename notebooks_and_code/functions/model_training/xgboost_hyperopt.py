@@ -1,4 +1,3 @@
-import deepchem as dc
 import pandas as pd
 import argparse
 import os
@@ -18,46 +17,46 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--train_labels",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/metlin_smrt/features/rdkit_csv/cv_splits/labels_train_0_split.csv",
+    help="directory for labels to featurized train data -- defaults to split 0",
 )
 parser.add_argument(
     "--train_feats",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/metlin_smrt/features/rdkit_csv/cv_splits/features_train_0_split.csv",
+    help="directory for featurized train data -- defaults to split 0",
 )
 
 parser.add_argument(
     "--valid_labels",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/metlin_smrt/features/rdkit_csv/cv_splits/labels_valid_0_split.csv",
+    help="directory for labels to featurized valid data -- defaults to split 0",
 )
 parser.add_argument(
     "--valid_feats",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/metlin_smrt/features/rdkit_csv/cv_splits/features_valid_0_split.csv",
+    help="directory for featurized valid data -- defaults to split 0",
 )
 
 parser.add_argument(
     "--test_labels",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/data/metlin_smrt/features/rdkit_csv/cv_splits/labels_test_df.csv",
+    help="directory for labels featurized test data -- defaults to split 0",
 )
 parser.add_argument(
     "--test_feats",
     type=str,
-    default="../data/premade_splits/PLS_desc/cv_splits/",
-    help="directory for featurized data -- defaults to split 0",
+    default="../data/data/metlin_smrt/features/rdkit_csv/cv_splits/features_test_df.csv",
+    help="directory for featurized test data -- defaults to split 0",
 )
 
 parser.add_argument(
     "--model_directory",
     type=str,
-    default="../models/model_default/",
+    default="../models/xgboost/",
     help="directory for model_saving",
 )
 
@@ -100,19 +99,13 @@ X_test.columns = new_column_names
 
 
 print("*** reloaded the featurized data ***")
-# print(train_dataset)
-
-
-###* merging the train and val due to GridsearcCV operation (which does parameter opt + CV)
-# X_train_val = pd.concat([X_train, X_valid], axis = 0)
-# y_train_val = pd.concat([y_train, y_valid], axis = 0)
 
 
 ############################################################################
 # Model training
 ############################################################################
 
-model_check_point = args.model_directory  #'../models/deepchem/dmpnn_rdkit/hyperopt3/'
+model_check_point = args.model_directory
 epochs = args.epochs
 iterations = args.iterations
 
@@ -127,9 +120,6 @@ best_params = xgboost_hyperopt(
     epochs=epochs,
     iterations=iterations,
 )
-
-# load
-##? xgb_model_loaded = pickle.load(open(file_name, "rb"))
 
 
 ############################################################################
