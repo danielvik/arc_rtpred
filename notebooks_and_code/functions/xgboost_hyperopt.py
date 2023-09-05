@@ -1,7 +1,9 @@
 import pandas as pd
 import argparse
 import os
-from functions.xgboost_operations import xgboost_hyperopt, xgboost_retrain_test
+
+# from functions.xgboost_operations import xgboost_hyperopt, xgboost_retrain_test
+from xgboost_operations import xgboost_hyperopt, xgboost_retrain_test
 
 
 seed = 42
@@ -80,19 +82,19 @@ print(
 # Reading data and converting data formats
 ############################################################################
 
-y_train = pd.read_csv(os.path.abspath(args.train_labels))["RT"]
+y_train = pd.read_csv(os.path.abspath(args.train_labels))["rt"]
 X_train = pd.read_csv(os.path.abspath(args.train_feats))
 new_column_names = ["X" + str(i) for i in range(len(X_train.columns))]
 X_train.columns = new_column_names
 
 
-y_valid = pd.read_csv(os.path.abspath(args.valid_labels))["RT"]
+y_valid = pd.read_csv(os.path.abspath(args.valid_labels))["rt"]
 X_valid = pd.read_csv(os.path.abspath(args.valid_feats))
 new_column_names = ["X" + str(i) for i in range(len(X_valid.columns))]
 X_valid.columns = new_column_names
 
 
-y_test = pd.read_csv(os.path.abspath(args.test_labels))["RT"]
+y_test = pd.read_csv(os.path.abspath(args.test_labels))["rt"]
 X_test = pd.read_csv(os.path.abspath(args.test_feats))
 new_column_names = ["X" + str(i) for i in range(len(X_test.columns))]
 X_test.columns = new_column_names

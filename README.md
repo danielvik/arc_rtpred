@@ -14,7 +14,7 @@ The features used are:
 - LogD calculcations for the range pH 0.5-7.4
 - Molecular Graph Convolutions
 
-Features are calculcated using DeepChem module, except for LogD which was done with Chemaxons cxcalc commandline tool.
+Features are calculcated using DeepChem module (https://deepchem.io/), except for LogD which was done with Chemaxons cxcalc commandline tool (https://docs.chemaxon.com/display/docs/cxcalc-command-line-tool.md).
 
 Data splits and features are saved locally, and used the train a set of models:
 
@@ -31,19 +31,21 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 ### Requirements
 - rdkit
 - pytorch
+- xgboost
 - deepchem
+- chemprop
 - hyperopt
-
+- dgllife
 
 ### Getting started
 
 clone the repo 
 
-create enviroment (arc_rtpred.yml)
+create enviroment (env.yml) -- it can take a while to create the env
 
-The notebook [[./notebooks_and_code/featurizing_and_splitting.ipynb]] contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
+The  [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
 
-After running the notebook, run the [[./notebooks_and_code/model_queue.sh]] shell script to train the models.
+After running the notebook, run the [model_queue.sh](./notebooks_and_code/scripts/model_queue.sh) shell script to train the models.
 
 ### TODO 
 
