@@ -28,6 +28,9 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 
 
 ### Requirements
+
+- numpy
+- scipy
 - rdkit
 - pytorch
 - xgboost
@@ -35,6 +38,7 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 - chemprop
 - hyperopt
 - dgllife
+- dgl
 
 ### Getting started
 
@@ -43,6 +47,4 @@ clone the repo
 create enviroment (env.yml) -- it can take a while to create the env
 
 The  [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
-
-After running the notebook, run the [model_queue.sh](./notebooks_and_code/scripts/model_queue.sh) shell script to train the models.
 

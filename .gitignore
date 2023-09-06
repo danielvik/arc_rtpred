@@ -1,6 +1,9 @@
 
-*.pyc
 .databricks
+misc_notebook.ipynb
+environment_test.yml
 
+*.pyc
 /code_package/*
 /data/*
+/models/*
