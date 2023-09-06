@@ -67,9 +67,6 @@ def feature_splitter_csv(
             if file.startswith("all_data") and file.endswith(".csv"):
                 csv_feature_paths.append(os.path.join(subdir, file))
                 csv_feature_subdirs.append(subdir)
-            # deepchem diskdatasets
-            # elif (file.endswith('.gzip')):
-            #    disk_feature_subdirs.append(subdir)
 
     ##* getting the paths for the premade-splits
 
@@ -98,17 +95,13 @@ def feature_splitter_csv(
         ##* for each feature type, the features are split according to the premade_splits
         for j, split in enumerate(split_paths):
             split = pd.read_csv(split_paths[j])
-            # merged_split = split.merge(features, on = 'id', how = 'inner')
-            merged_split = pd.concat(
-                [split, features], axis=1, join="inner"
-            )  # , on='id')
+            merged_split = pd.concat([split, features], axis=1, join="inner")
 
             save_dir = os.path.join(csv_feature_subdirs[i], save_folder_name)  #!
             if not os.path.exists(save_dir):  #!
                 os.makedirs(save_dir)  #!
 
             labels_split = merged_split[["smiles", "rt"]]
-            #            labels_split.to_csv(os.path.join(csv_feature_subdirs[i], ('labels_'+output_paths[j])), index=False)
             labels_split.to_csv(
                 os.path.join(save_dir, ("labels_" + output_paths[j])), index=False
             )
@@ -116,7 +109,6 @@ def feature_splitter_csv(
             feature_split = merged_split.drop(["id", "rt", "smiles"], axis=1)
             if "w" in feature_split:
                 feature_split = feature_split.drop(["w"], axis=1)
-            #            feature_split.to_csv(os.path.join(csv_feature_subdirs[i], ('features_'+output_paths[j])), index=False)
             feature_split.to_csv(
                 os.path.join(save_dir, ("features_" + output_paths[j])), index=False
             )

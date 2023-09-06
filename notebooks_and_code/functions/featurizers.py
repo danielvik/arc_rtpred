@@ -55,22 +55,7 @@ def get_METLIN_data(sampling=2000, only_retained=True):
 
 def LogD_calculations(data, path_to_chemaxon_licence=None, path_to_chemaxon_tools=None):
     """
-    ChemAxon based calculation of LogD descriptors. Must be done while having access to the G:\ drive and the C:\nuevolution\KNIME_TEMP folder.
-
-    Binning is a way to provide a set of descriptors that more accurately mirror the distribution of probablity around a calculated property, instead of just a single number. It factores in some of the uncertainty in the calculcation.
-
-    Parameters
-    ----------
-    data : dataframe
-        SMILES strings for the molecule we wish to calculate the descriptors for
-
-    path_to_chemaxon_licence: str
-        string with the file path for chemaxon licence to cx_calc.
-
-    Returns
-    -------
-    logd_desc : dataframe
-        dataframe with the SMILES and calculated logd values. If binning matrix is specified there is also binning descriptors
+    Function to calculate LogD using ChemAxon's commandline tool. The function takes a pandas dataframe with a column named 'smiles' and returns a dataframe with the calculated LogD values.
 
     """
 
@@ -123,8 +108,6 @@ def get_features(
     # ECFP4 arguments
     nBits = 2048
     radius = 2
-
-    # feature_list = ['logD', 'ecfp4_csv', 'ecfp4_disk', 'rdkit_csv', 'rdkit_disk', 'molgraphconv']
 
     data = pd.read_csv(path_to_data)
 

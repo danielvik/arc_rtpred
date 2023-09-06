@@ -8,7 +8,7 @@ base_data_dir = "./data/metlin_smrt/features/molgraphconv/cv_splits/"
 
 # Loop through the 5 CV splits
 start = 0
-end = 1  # 4
+end = 4
 
 for i in range(start, end + 1):
     model_subdir = os.path.join(model_dir, f"attentivefp_{i}/")

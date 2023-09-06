@@ -8,7 +8,7 @@ base_data_dir = "./data/metlin_smrt/features/ecfp4_csv/cv_splits/"
 
 # Loop through the 5 CV splits
 start = 0
-end = 4
+end = 1  # 4
 
 for i in range(start, end + 1):
     model_subdir = os.path.join(model_dir, f"chemprop_ecfp4_{i}/")
@@ -43,9 +43,9 @@ for i in range(start, end + 1):
             "r2",
             "--save_preds",
             "--epochs",
-            "100",
+            "30",  # 100
             "--num_iters",
-            "20",
+            "2",  # 20
             "--no_cache_mol",
             "--num_workers",
             "20",
@@ -83,7 +83,7 @@ for i in range(start, end + 1):
             "r2",
             "--save_preds",
             "--epochs",
-            "100",
+            "3",  # 100
             "--no_cache_mol",
             "--num_workers",
             "20",
