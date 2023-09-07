@@ -29,16 +29,16 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 
 ### Requirements
 
-- numpy
-- scipy
-- rdkit
-- pytorch
-- xgboost
-- deepchem
-- chemprop
-- hyperopt
-- dgllife
-- dgl
+- numpy v1.20
+- scipy v1.9.3
+- rdkit v2022.03.5
+- pytorch v1.12.1
+- xgboost v1.7.6
+- deepchem v2.7.1
+- chemprop v1.6.0
+- hyperopt v0.2.7
+- dgllife v0.3.2
+- dgl v1.1.2
 
 ### Getting started
 
