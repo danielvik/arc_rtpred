@@ -24,9 +24,6 @@ Data splits and features are saved locally, and used the train a set of models:
 
 Each model training is composed of 5 hyperparameter optimization (100 epochs, 20 iterations) using hyperopt module and TPE search algorithm. The hyperoptimization is then followed by a re-training of the best model settings.
 
-### 
-
-
 ### Requirements
 
 - numpy v1.20
@@ -42,9 +39,12 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 
 ### Getting started
 
-clone the repo 
+clone the repo
 
-create enviroment (env.yml) -- it can take a while to create the env
+create conda enviroment
+use the environment.yml file or install the above requirements manually. The build from the yml file is not GPU-enabled, so installing pytorch-gpu and xgboost-gpu should be done after building the environment.
+
 
 The  [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
 
+Model training [scripts](./notebooks_and_code/model_training/) can then be run afterwards.
