@@ -39,12 +39,14 @@ Each model training is composed of 5 hyperparameter optimization (100 epochs, 20
 
 ### Getting started
 
-clone the repo
+1. clone the repo: ```git clone https://github.com/danielvik/arc_rtpred.git```
+2. ```cd arc_rtpred```
+3. create conda environment: ```conda env create -f environment.yml```
+4. ```conda activate arc_rtpred```
 
-create conda enviroment
-use the environment.yml file or install the above requirements manually. The build from the yml file is not GPU-enabled, so installing pytorch-gpu and xgboost-gpu should be done after building the environment.
+The build from the yml file is not GPU-enabled, so installing pytorch-gpu and xgboost-gpu should be done after building the environment.
 
 
-The  [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
+The [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
 
 Model training [scripts](./notebooks_and_code/model_training/) can then be run afterwards.
