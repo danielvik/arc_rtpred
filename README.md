@@ -49,4 +49,4 @@ The build from the yml file is not GPU-enabled, so installing pytorch-gpu and xg
 
 The [notebook](./notebooks_and_code/featurizing_and_splitting.ipynb) contains a step-by-step walkthrough of data featurization, splitting, model training and evaluation using the public METLIN SMRT dataset.
 
-Model training [scripts](./notebooks_and_code/model_training/) can then be run afterwards.
+Model training [scripts](./notebooks_and_code/model_training/) can then be run once the directories ```./data/features/<your_features>/cv_splits/``` contain featurized data.
